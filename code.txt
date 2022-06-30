@@ -1,0 +1,1150 @@
+
+
+Lab No: 1 CPU SCHEDULING ALGORITHMS
+
+A. FIRST COME FIRST SERVICE (FCFS)
+
+Objective: 
+To write a c program to simulate the CPU scheduling algorithm First Come First Serve (FCFS) 
+
+Decription:
+To calculate the average waiting time using the FCFS algorithm first the waiting time of the first process is kept zero and the waiting time of the second process is the burst time of the first process and the waiting time of the third process is the sum of the burst times of the first and the second process and so on. After calculating all the waiting times the average waiting time is calculated as the average of all the waiting times. FCFS mainly says first come first serve the algorithm which came first will be served first.
+
+Algorithm:
+
+Step 1: Start the process
+
+Step 2: Accept the number of processes in the ready Queue 
+
+Step 3: For each process in the ready Q, assign the process name and the burst time 
+
+Step 4: Set the waiting of the first process as ‗0‘and its burst time as its turnaround time 
+
+Step 5: for each process in the Ready Q calculate a). Waiting time (n) = waiting time (n-1) + Burst time (n-1) b). Turnaround time (n)= waiting time(n)+Burst time(n) 
+
+Step 6: Calculate a) Average waiting time = Total waiting Time / Number of process b) Average Turnaround time = Total Turnaround Time / Number of process 
+
+Step 7: Stop the process
+
+
+	
+
+
+
+
+
+Source Code:
+
+#include<stdio.h>
+#include<conio.h> 
+main()
+{
+int bt[20], wt[20], tat[20], i, n; 
+float wtavg, tatavg;
+
+printf("\nEnter the number of processes -- "); 
+scanf("%d", &n);
+for(i=0;i<n;i++)
+{
+printf("\nEnter Burst Time for Process %d -- ", i); 
+scanf("%d", &bt[i]);
+}
+wt[0] = wtavg = 0; 
+tat[0] = tatavg = bt[0]; 
+for(i=1;i<n;i++)
+{
+wt[i] = wt[i-1] +bt[i-1];
+tat[i] = tat[i-1] +bt[i]; 
+wtavg = wtavg + wt[i]; 
+tatavg = tatavg + tat[i];
+}
+printf("\t PROCESS \tBURST TIME \t WAITING TIME\t TURNAROUND TIME\n");
+for(i=0;i<n;i++)
+printf("\n\t P%d \t\t %d \t\t %d \t\t %d", i, bt[i], wt[i], tat[i]); 
+printf("\nAverage Waiting Time -- %f", wtavg/n);
+printf("\nAverage Turnaround Time -- %f", tatavg/n); 
+getch();
+}
+
+
+
+
+
+
+
+
+
+Output:
+
+
+B. SHORTEST JOB FIRST (SJF)
+
+Objective:
+To write a program to stimulate the CPU scheduling algorithm Shortest job first (Non- Preemption)
+
+Description:
+To calculate the average waiting time in the shortest job first algorithm the sorting of the process based on their burst time in ascending order then calculate the waiting time of each process as the sum of the bursting times of all the process previous or before to that process.
+
+Algorithm:
+
+Step 1: Start the process 
+
+Step 2: Accept the number of processes in the ready Queue 
+
+Step 3: For each process in the ready Q, assign the process id and accept the CPU burst time 
+
+Step 4: Start the Ready Q according the shortest Burst time by sorting according to lowest to highest burst time. 
+
+Step 5: Set the waiting time of the first process as ‗0‘ and its turnaround time as its burst time. 
+Step 6: Sort the processes names based on their Burt time 
+
+Step 7: For each process in the ready queue, calculate a) Waiting time(n)= waiting time (n-1) + Burst time (n-1) b) Turnaround time (n)= waiting time(n)+Burst time(n) 
+
+Step 8: Calculate c) Average waiting time = Total waiting Time / Number of process d)Average Turnaround time = Total Turnaround Time / Number of process 
+
+Step 9: Stop the process
+
+Source Code:
+
+#include<stdio.h> 
+#include<conio.h> 
+main()
+{
+int p[20], bt[20], wt[20], tat[20], i, k, n, temp; 
+float wtavg, tatavg;
+
+printf("\nEnter the number of processes -- "); 
+scanf("%d", &n);
+for(i=0;i<n;i++)
+{
+p[i]=i;
+printf("Enter Burst Time for Process %d -- ", i); 
+scanf("%d", &bt[i]);
+}
+for(i=0;i<n;i++) 
+for(k=i+1;k<n;k++) 
+if(bt[i]>bt[k])
+{
+temp=bt[i]; 
+bt[i]=bt[k]; 
+bt[k]=temp;
+temp=p[i]; 
+p[i]=p[k]; 
+p[k]=temp;
+}
+wt[0] = wtavg = 0;
+tat[0] = tatavg = bt[0]; for(i=1;i<n;i++)
+{
+wt[i] = wt[i-1] +bt[i-1];
+tat[i] = tat[i-1] +bt[i]; 
+wtavg = wtavg + wt[i]; 
+tatavg = tatavg + tat[i];
+}
+printf("\n\t PROCESS \tBURST TIME \t WAITING TIME\t TURNAROUND TIME\n");
+for(i=0;i<n;i++)
+printf("\n\t P%d \t\t %d \t\t %d \t\t %d", p[i], bt[i], wt[i], tat[i]); 
+printf("\nAverage Waiting Time -- %f", wtavg/n);
+printf("\nAverage Turnaround Time -- %f", tatavg/n); 
+getch();
+}
+
+Output:
+
+
+
+
+C. ROUND ROBIN
+
+Objective:
+To simulate the CPU scheduling algorithm round-robin.
+
+Description:
+To aim is to calculate the average waiting time. There will be a time slice, each process should be executed within that time-slice and if not it will go to the waiting state so first check whether the burst time is less than the time-slice. If it is less than it assign the waiting time to the sum of the total times. If it is greater than the burst-time then subtract the time slot from the actual burst time and increment it by time-slot and the loop continues until all the processes are completed.
+
+
+
+
+Algorithm:
+
+Step 1: Start the process 
+
+Step 2: Accept the number of processes in the ready Queue and time quantum (or) time slice 
+
+Step 3: For each process in the ready Q, assign the process id and accept the CPU burst time 
+
+Step 4: Calculate the no. of time slices for each process where No. of time slice for process (n) = burst time process (n)/time slice 
+
+Step 5: If the burst time is less than the time slice then the no. of time slices =1. 
+
+Step 6: Consider the ready queue is a circular Q, calculate
+ a) Waiting time for process (n) = waiting time of process(n-1)+ burst time of process(n-1 ) + the time difference in getting the CPU fromprocess(n-1) 
+b) Turnaround time for process(n) = waiting time of process(n) + burst time of process(n)+ the time difference in getting CPU from process(n). 
+
+Step 7: Calculate 
+c) Average waiting time = Total waiting Time / Number of process 
+d) Average Turnaround time = Total Turnaround Time / Number ofprocess
+
+ Step 8: Stop the process
+
+Source Code:
+
+#include<stdio.h>
+#include<conio.h>
+main()
+{
+int i,j,n,bu[10],wa[10],tat[10],t,ct[10],max; 
+float awt=0,att=0,temp=0;
+
+printf("Enter the no of processes -- "); 
+scanf("%d",&n);
+for(i=0;i<n;i++)
+{
+printf("\nEnter Burst Time for process %d -- ", i+1); 
+scanf("%d",&bu[i]);
+ct[i]=bu[i];
+}
+printf("\nEnter the size of time slice -- "); 
+scanf("%d",&t);
+max=bu[0]; 
+for(i=1;i<n;i++) 
+if(max<bu[i]) 
+max=bu[i]; 
+for(j=0;j<(max/t)+1;j++) 
+for(i=0;i<n;i++) 
+if(bu[i]!=0)
+if(bu[i]<=t) {
+tat[i]=temp+bu[i]; 
+temp=temp+bu[i]; 
+bu[i]=0;
+}
+else {
+bu[i]=bu[i]-t; 
+temp=temp+t;
+}
+for(i=0;i<n;i++){
+wa[i]=tat[i]-
+ct[i]; att+=tat[i]; 
+awt+=wa[i];}
+printf("\nThe Average Turnaround time is -- %f",att/n); 
+printf("\nThe Average Waiting time is -- %f ",awt/n);
+printf("\n\tPROCESS\t BURST TIME \t WAITING TIME\tTURNAROUND TIME\n");
+for(i=0;i<n;i++)
+printf("\t%d \t %d \t\t %d \t\t %d \n",i+1,ct[i],wa[i],tat[i]); 
+getch();
+}
+
+
+
+
+
+
+
+
+
+
+Output:
+
+
+
+
+D. PRIORITY 
+
+Objective:
+To write a c program to simulate the CPU scheduling priorityalgorithm.
+
+Description:
+To calculate the average waiting time in the priority algorithm, sort the burst times according to their priorities and then calculate the average waiting time of the processes. The waiting time of each process is obtained by summing up the burst times of all the previous processes.
+
+Algorithm:
+
+Step 1: Start the process 
+
+Step 2: Accept the number of processes in the ready Queue 
+
+Step 3: For each process in the ready Q, assign the process id and accept the CPU burst time 
+
+Step 4: Sort the ready queue according to the priority number.
+
+Step 5: Set the waiting of the first process as ‗0‘ and its burst time as its turnaround time 
+
+Step 6: Arrange the processes based on process priority 
+
+Step 7: For each process in the Ready Q calculate 
+
+Step 8: for each process in the Ready Q calculate 
+a) Waiting time(n)= waiting time (n-1) + Burst time (n-1) 
+b) Turnaround time (n)= waiting time(n)+Burst time(n) 
+
+Step 9: Calculate 
+c) Average waiting time = Total waiting Time / Number of process 
+d) Average Turnaround time = Total Turnaround Time / Number of process Print the results in an order. 
+
+Step10: Stop
+
+Source Code:
+
+#include<stdio.h>
+#include<conio.h> 
+main()
+{
+int p[20],bt[20],pri[20], wt[20],tat[20],i, k, n, temp; float wtavg, 
+tatavg;
+
+printf("Enter the number of processes --- "); 
+scanf("%d",&n);
+for(i=0;i<n;i++){
+p[i] = i;
+printf("Enter the Burst Time & Priority of Process %d --- ",i); scanf("%d%d",&bt[i], &pri[i]);
+}
+for(i=0;i<n;i++) 
+for(k=i+1;k<n;k++) 
+if(pri[i] > pri[k]){
+temp=p[i]; 
+p[i]=p[k]; 
+p[k]=temp;
+temp=bt[i]; 
+bt[i]=bt[k]; 
+bt[k]=temp;
+temp=pri[i]; 
+pri[i]=pri[k]; 
+pri[k]=temp;
+}
+wtavg = wt[0] = 0; 
+tatavg = tat[0] = bt[0]; 
+for(i=1;i<n;i++)
+{
+wt[i] = wt[i-1] + bt[i-1];
+tat[i] = tat[i-1] + bt[i];
+wtavg = wtavg + wt[i]; 
+tatavg = tatavg + tat[i];
+}
+printf("\nPROCESS\t\tPRIORITY\tBURST TIME\tWAITING TIME\tTURNAROUND TIME");
+for(i=0;i<n;i++)
+printf("\n%d \t\t %d \t\t %d \t\t %d \t\t %d ",p[i],pri[i],bt[i],wt[i],tat[i]); 
+printf("\nAverage Waiting Time is --- %f",wtavg/n); printf("\nAverage Turnaround Time is --- %f",tatavg/n);
+getch();
+}
+
+Output:
+
+
+
+Conclusion:
+The calculation of four algorithms shows the different average waiting time. The FCFS is better for a small burst time. The SJF is better if the process comes to processor simultaneously. The Round Robin, is better to adjust the average waiting time desired. Round Robin quantum time will set it towards more SJF or FCFS value. The last algorithm, Priority works well if important jobs are needed to be executed
+regardless of process time and burst time. All algorithm is good, but the speed of the process depends on the processor load.
+
+
+
+
+2
+
+Lab No: 2
+PRODUCER CONSUMER PROBLEM USING SEMAPHORES
+
+Objective:
+To Write a C program to simulate producer-consumer problem using semaphores
+
+Description:
+Producer consumer problem is a synchronization problem. There is a fixed size buffer where the producer produces items and that is consumed by a consumer process. One solution to the producerconsumer problem uses shared memory. To allow producer and consumer processes to run concurrently, there must be available a buffer of items that can be filled by the producer and emptied by the consumer. This buffer will reside in a region of memory that is shared by the producer and consumer processes. The producer and consumer must be synchronized, so that the consumer does not try to consume an item that has not yet been produced.
+
+Source Code:
+
+#include<stdio.h> 
+#include<conio.h>
+main()
+{
+int buffer[10], bufsize, in, out, produce, consume, 
+choice=0; in = 0;
+out = 0;
+bufsize = 10;
+while(choice !=3){
+ printf("\n1. Produce \t 2. Consume \t3. Exit");
+printf("\nEnter your choice:" );
+scanf("%d",&choice); 
+switch(choice) {
+case 1: if((in+1)%bufsize==out)
+printf("\nBuffer is Full");
+else
+{
+printf("\nEnter the value: ");
+scanf("%d", &produce); 
+buffer[in] = produce;
+in = (in+1)%bufsize;
+}
+break;
+
+case 2: if(in == out)
+printf("\nBuffer is Empty");
+else
+{
+consume = buffer[out];
+printf("\nThe consumed value is %d", consume); 
+out = (out+1)%bufsize;
+}
+break;
+} 
+} 
+getch();
+}
+
+Output:
+
+
+Conclusion:
+After solving producer consumer problem we can say that, Both producer and consumer
+processes share a common memory buffer. Not more than one process can access the buffer at a time otherwise there won’t be any mutual exclusion conditions. Full, Empty and mutex semaphore help to solve Producer-consumer problem. Full semaphore checks for the number of filled space in the buffer by the producer process. We also get to know both the problem and solutions of producer consumer problem.
+Lab No: 3
+DINING – PHILOSOPHERS PROBLEM
+
+Objective:
+To Write a C program to simulate the concept of Dining-Philosophers problem.
+
+Description:
+The dining-philosophers problem is considered a classic synchronization problem because it is an example of a large class of concurrency-control problems. It is a simple representation of the need to allocate several resources among several processes in a deadlock-free and starvation-free manner. Consider five philosophers who spend their lives thinking and eating. The philosophers share a circular table surrounded by five chairs, each belonging to one philosopher. In the center of the table is a bowl of rice, and the table is laid with five single chopsticks. When a philosopher thinks, she does not interact with her colleagues. From time to time, a philosopher gets hungry and tries to pick up the two chopsticks that are closest to her (the chopsticks that are between her and her left and right neighbors). A philosopher may pick up only one chopstick at a time. Obviously, she cam1ot pick up a chopstick that is already in the hand of a neighbor. When a hungry philosopher has both her chopsticks at the same time, she eats without releasing her chopsticks. When she is finished eating, she puts down both of her chopsticks and starts thinking again. The dining-philosophers problem may lead to a deadlock situation and hence some rules have to be framed to avoid the occurrence of deadlock. 
+
+Source Code:
+#include <pthread.h>
+#include <semaphore.h>
+#include <stdio.h>
+
+#define N 5
+#define THINKING 2
+#define HUNGRY 1
+#define EATING 0
+#define LEFT (phnum + 4) % N
+#define RIGHT (phnum + 1) % N
+
+int state[N];
+int phil[N] = { 0, 1, 2, 3, 4 };
+
+sem_t mutex;
+sem_t S[N];
+
+void test(int phnum)
+{
+	if (state[phnum] == HUNGRY
+		&& state[LEFT] != EATING
+		&& state[RIGHT] != EATING) {
+		// state that eating
+		state[phnum] = EATING;
+
+		sleep(2);
+
+		printf("Philosopher %d takes fork %d and %d\n",
+					phnum + 1, LEFT + 1, phnum + 1);
+
+		printf("Philosopher %d is Eating\n", phnum + 1);o
+		sem_post(&S[phnum]);
+	}
+}
+
+// take up chopsticks
+void take_fork(int phnum)
+{
+	sem_wait(&mutex);
+
+	state[phnum] = HUNGRY;
+
+	printf("Philosopher %d is Hungry\n", phnum + 1);
+	test(phnum);
+
+	sem_post(&mutex);
+	sem_wait(&S[phnum]);
+
+	sleep(1);
+}
+void put_fork(int phnum)
+{
+	sem_wait(&mutex);
+	state[phnum] = THINKING;
+
+	printf("Philosopher %d putting fork %d and %d down\n",
+		phnum + 1, LEFT + 1, phnum + 1);
+	printf("Philosopher %d is thinking\n", phnum + 1);
+
+	test(LEFT);
+	test(RIGHT);
+	sem_post(&mutex);
+}
+
+void* philosopher(void* num)
+{
+
+	while (1) {
+
+		int* i = num;
+		sleep(1);
+		take_fork(*i);
+		sleep(0);
+		put_fork(*i);
+	}
+}
+
+int main()
+{
+	int i;
+	pthread_t thread_id[N];
+	sem_init(&mutex, 0, 1);
+
+	for (i = 0; i < N; i++)
+
+		sem_init(&S[i], 0, 0);
+
+	for (i = 0; i < N; i++) {
+
+		// create philosopher processes
+		pthread_create(&thread_id[i], NULL,philosopher, &phil[i]);
+
+		printf("Philosopher %d is thinking\n", i + 1);
+	}
+
+	for (i = 0; i < N; i++)
+
+		pthread_join(thread_id[i], NULL);
+}
+
+
+
+Output:
+
+
+
+Conclusion:
+After solving Dinning Philosopher’s problem, we can say that it is an analogy for process and chopstick for resources, we can try to solve process synchronization problems using this. The solution of Dining Philosopher problem focuses on the use of semaphores. No two nearby philosophers can eat at the same time using the aforesaid solution to the dining philosopher problem, and this situation causes a deadlock, this is a drawback of the Dining philosopher problem. It also helps to solve the issue of operating system from different views.
+
+
+
+
+
+Lab No: 4
+MEMORY ALLOCATION TECHNIQUES
+
+Objective:
+To Write a C program to simulate the following contiguous memory allocation techniques 
+a) Worst-fit 
+b) Best-fit 
+c) First-fit
+
+Description:
+One of the simplest methods for memory allocation is to divide memory into several fixed-sized partitions. Each partition may contain exactly one process. In this multiple-partition method, when a partition is free, a process is selected from the input queue and is loaded into the free partition. When the process terminates, the partition becomes available for another process. The operating system keeps a table indicating which parts of memory are available and which are occupied. Finally, when a process arrives and needs memory, a memory section large enough for this process is provided. When it is time to load or swap a process into main memory, and if there is more than one free block of memory of sufficient size, then the operating system must decide which free block to allocate. Best-fit strategy chooses the block that is closest in size to the request. First-fit chooses the first available block that is large enough. Worst-fit chooses the largest available block.
+
+Source Code:
+
+1. WORST FIT
+
+#include<stdio.h> 
+#include<conio.h> 
+#define max 25
+main()
+{
+int 
+frag[max],b[max],f[max],i,j,nb,nf,temp; 
+static int bf[max],ff[max];
+
+printf("\n\tMemory Management Scheme - First Fit"); 
+printf("\nEnter the number of blocks:"); 
+scanf("%d",&nb);
+printf("Enter the number of files:"); 
+scanf("%d",&nf);
+printf("\nEnter the size of the blocks:-\n"); 
+for(i=1;i<=nb;i++)
+{
+printf("Block %d:",i);
+scanf("%d",&b[i]);
+}
+printf("Enter the size of the files :-\n"); 
+for(i=1;i<=nf;i++)
+{
+printf("File %d:",i);
+scanf("%d",&f[i]);
+
+}
+for(i=1;i<=nf;i++)
+{
+for(j=1;j<=nb;j++)
+{
+if(bf[j]!=1)
+{
+temp=b[j]-f[i]; 
+if(temp>=0)
+{
+ff[i]=j;
+break;
+}
+}
+}
+frag[i]=temp; 
+bf[ff[i]]=1;
+}
+printf("\nFile_no:\tFile_size :\tBlock_no:\tBlock_size:\tFragement"); 
+for(i=1;i<=nf;i++)
+printf("\n%d\t\t%d\t\t%d\t\t%d\t\t%d",i,f[i],ff[i],b[ff[i]],frag[i]);
+getch();
+}
+
+
+
+
+
+
+Output:
+
+
+
+2. BEST FIT
+#include<stdio.h> 
+#include<conio.h> 
+#define max 25
+main()
+{
+int frag[max],b[max],f[max],i,j,nb,nf,temp,lowest=10000; 
+static int bf[max],ff[max];
+
+printf("\nEnter the number of blocks:"); 
+scanf("%d",&nb);
+printf("Enter the number of files:"); 
+scanf("%d",&nf);
+printf("\nEnter the size of the blocks:-\n"); 
+for(i=1;i<=nb;i++){
+	printf("Block %d:",i);
+	scanf("%d",&b[i]);	
+}
+
+printf("Enter the size of the files :-\n"); 
+for(i=1;i<=nf;i++)
+{
+printf("File %d:",i);
+scanf("%d",&f[i]);
+}
+for(i=1;i<=nf;i++)
+{
+for(j=1;j<=nb;j++)
+{
+if(bf[j]!=1)
+{
+temp=b[j]-f[i]; 
+if(temp>=0)
+if(lowest>temp)
+{
+ff[i]=j;
+lowest=temp;
+}
+}}
+frag[i]=lowest; bf[ff[i]]=1; lowest=10000;
+}
+printf("\nFile No\tFile Size \tBlock No\tBlock Size\tFragment"); 
+for(i=1;i<=nf && ff[i]!=0;i++){
+printf("\n%d\t\t%d\t\t%d\t\t%d\t\t%d",i,f[i],ff[i],b[ff[i]],frag[i]);	
+}
+
+getch();
+}
+
+Output:
+
+
+
+
+
+
+
+3. FIRST FIT
+
+#include<stdio.h>
+#include<conio.h>
+#define max 25
+main()
+{
+int 
+frag[max],b[max],f[max],i,j,nb,nf,temp,highest=0; static int bf[max],ff[max];
+
+ 
+printf("\nEnter the number of blocks:");
+scanf("%d",&nb);
+printf("Enter the number of files:"); 
+scanf("%d",&nf);
+printf("\nEnter the size of the blocks:-\n");
+for(i=1;i<=nb;i++)
+{
+printf("Block %d:",i);
+scanf("%d",&b[i]);
+}
+printf("Enter the size of the files :-\n"); 
+for(i=1;i<=nf;i++)
+{
+printf("File %d:",i);
+scanf("%d",&f[i]);
+}
+for(i=1;i<=nf;i++)
+{
+for(j=1;j<=nb;j++)
+{
+if(bf[j]!=1) //if bf[j] is not allocated
+{
+temp=b[j]-f[i]; 
+if(temp>=0)
+if(highest<temp)
+{
+}
+}
+frag[i]=highest; bf[ff[i]]=1; highest=0;
+}
+ff[i]=j; highest=temp;
+}
+printf("\nFile_no:\tFile_size:\tBlock_no:\tBlock_size:\tFragement"); 
+for(i=1;i<=nf;i++)
+printf("\n%d\t\t%d\t\t%d\t\t%d\t\t%d",i,f[i],ff[i],b[ff[i]],frag[i]);
+getch();
+}
+
+
+Output:
+
+
+
+Conclusion:
+Hence by solving some contiguous memory allocation techniques program, we came to know that in contiguous memory allocation, we allocate contiguous blocks of memory to each process when it is brought in the main memory to be executed. This techniques shows that all the process gets memory one after another in a continuous manner which helps in searching of the process easily.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Lab No: 5
+PAGE REPLACEMENT ALGORITHMS
+Objective:
+To implement page replacement technique 
+a) FIFO 
+b) LRU 
+c) OPTIMAL
+Description:
+Page replacement algorithms are an important part of virtual memory management and it helps the OS to decide which memory page can be moved out making space for the currently needed page. However, the ultimate objective of all page replacement algorithms is to reduce the number of page faults.
+ FIFO-This is the simplest page replacement algorithm. In this algorithm, the operating system keeps track of all pages in the memory in a queue, the oldest page is in the front of the queue. When a page needs to be replaced page in the front of the queue is selected for removal. 
+LRU-In this algorithm page will be replaced which is least recently used 
+OPTIMAL- In this algorithm, pages are replaced which would not be used for the longest duration of time in the future. This algorithm will give us less page fault when compared to other page replacement algorithms.
+
+Algorithm:
+1.Start the process 
+2. Read number of pages  n
+3. Read number of pages no 
+4. Read page numbers into an array a[i] 
+5. Initialize avail[i]=0 .to check page hit 
+6. Replace the page with circular queue, while re-placing check page availability in the frame Place avail[i]=1 if page is placed in theframe Count page faults 
+7. Print the results. 
+8. Stop the process
+1. FIRST IN FIRST OUT
+Source Code:
+#include<stdio.h> 
+#include<conio.h>
+ int fr[3];
+ main() {
+void display();
+int i,j,page[12]={2,3,2,1,5,2,4,5,3,2,5,2};
+int flag1=0,flag2=0,pf=0,frsize=3,top=0; 
+for(i=0;i<3;i++) {
+fr[i]=-1;
+}
+for(j=0;j<12;j++) {
+flag1=0; flag2=0; for(i=0;i<12;i++) {
+if(fr[i]==page[j]) {
+flag1=1; flag2=1; break; }}
+if(flag1==0) {
+for(i=0;i<frsize;i++) {
+if(fr[i]==-1)
+{
+fr[i]=page[j]; flag2=1; break; }}}
+if(flag2==0) {
+fr[top]=page[j]; 
+top++;
+pf++;
+if(top>=frsize) 
+top=0; }
+display(); 
+}
+
+printf("Number of page faults : %d ",pf+frsize);
+getch();
+}
+void display()
+{
+int i; printf("\n"); 
+for(i=0;i<3;i++)
+printf("%d\t",fr[i]);
+}
+
+Output:
+
+
+
+
+
+
+
+
+2. LEAST RECENTLY USED
+Objective:
+To implement LRU page replacement technique.
+Algorithm:
+1. Start the process 
+2. Declare the size 
+3. Get the number of pages to be inserted 
+4. Get the value 
+5. Declare counter and stack 
+6. Select the least recently used page by counter value 
+7. Stack them according the selection. 
+8. Display the values 
+9. Stop the process
+Source Code:
+#include<stdio.h> 
+#include<conio.h> 
+int fr[3];
+main()
+{
+void display();
+int p[12]={2,3,2,1,5,2,4,5,3,2,5,2},i,j,fs[3];
+int index,k,l,flag1=0,flag2=0,pf=0,frsize=3;
+
+for(i=0;i<3;i++)
+{
+fr[i]=-1;
+}
+for(j=0;j<12;j++)
+{
+flag1=0,flag2=0; 
+for(i=0;i<3;i++)
+{
+if(fr[i]==p[j])
+{
+flag1=1; 
+flag2=1; break;
+}
+}
+if(flag1==0)
+{
+for(i=0;i<3;i++) {
+if(fr[i]==
+-1)
+{
+fr[i]=p[j]; flag2=1; 
+break; }}}
+if(flag2==0) {
+for(i=0;i<3;i++) 
+fs[i]=0;
+for(k=j
+-1,l=1;l<=frsize
+-1;l++,k--
+)
+{
+for(i=0;i<3;i++) {
+if(fr[i]==p[k]) fs[i]=1;
+}}
+for(i=0;i<3;i++) {
+if(fs[i]==0) 
+index=i; }
+fr[index]=p[j]; 
+pf++; }
+display(); }
+printf("\n no of page faults :%d",pf+frsize);
+getch(); 
+}
+void display() {
+int i; printf("\n");
+for(i=0;i<3;i++) 
+printf("\t%d",fr[i]);
+}
+
+Output:
+
+
+
+
+3. OPTIMAL
+Objective:  
+To implement optimal page replacement technique.
+Algorithm:
+1. Start Program 
+2. Read Number Of Pages And Frames 
+3.Read Each Page Value 
+4. Search For Page In The Frames 
+5.If Not Available Allocate Free Frame 
+6. If No Frames Is Free Repalce The Page With The Page That Is Leastly Used 
+7.Print Page Number Of Page Faults 
+8.Stop process.
+Source Code:
+#include<stdio.h>
+#include<conio.h> 
+int fr[3], n, m;
+void display(); 
+ main()
+{
+int i,j,page[20],fs[10];
+int max,found=0,lg[3],index,k,l,flag1=0,flag2=0,pf=0; 
+float pr;
+
+printf("Enter length of the reference string: "); 
+scanf("%d",&n);
+printf("Enter the reference string: "); 
+for(i=0;i<n;i++) 
+scanf("%d",&page[i]);
+printf("Enter no of frames: "); 
+scanf("%d",&m); 
+for(i=0;i<m;i++)
+fr[i]=-1; pf=m;
+
+for(j=0;j<n;j++) {
+flag1=0; flag2=0; 
+for(i=0;i<m;i++) {
+if(fr[i]==page[j]) {
+flag1=1; flag2=1; 
+break; }}
+if(flag1==0) {
+for(i=0;i<m;i++) {
+if(fr[i]==
+-1)
+{
+fr[i]=page[j]; flag2=1; 
+break; }}}
+if(flag2==0) {
+for(i=0;i<m;i++) 
+lg[i]=0; 
+for(i=0;i<m;i++) {
+for(k=j+1;k<=n;k++) {
+if(fr[i]==page[k]) {
+lg[i]=k
+-j; 
+break; }}}
+found=0; 
+for(i=0;i<m;i++) {
+if(lg[i]==0) {
+index=i; 
+found = 1;
+
+break;
+}
+}
+if(found==0)
+{
+max=lg[0]; index=0; 
+for(i=0;i<m;i++)
+{
+if(max<lg[i])
+{
+max=lg[i];
+index=i;
+}
+}
+}
+fr[index]=page[j]; 
+pf++;
+}
+display();
+}
+printf("Number of page faults : %d\n", pf); 
+pr=(float)pf/n*100;
+printf("Page fault rate = %f \n", pr); getch();
+}
+void display()
+{
+int i; for(i=0;i<m;i++) 
+printf("%d\t",fr[i]); 
+printf("\n");
+}
+
+Output:
+
+
+Conclusion:
+After performing some page replacement algorithms we came to know that, in response to the increased demand for memory on mobile devices, modern operating systems are able to increase the memory allocation for applications in a more controlled way. This approach ensures that the applications are only allowed to use the memory that is necessary for them, and that the memory is not consumed by the applications that are not actively in use. This concept defines about the virtual memory in detail.
+
+
+
+Lab No: 6
+DISK SCHEDULING ALGORITHMS
+Objective:
+To Write a C program to simulate disk scheduling algorithms 
+a) FCFS 
+b) SCAN 
+c) C-SCAN
+Description:
+One of the responsibilities of the operating system is to use the hardware efficiently. For the disk drives, meeting this responsibility entails having fast access time and large disk bandwidth. Both the access time and the bandwidth can be improved by managing the order in which disk I/O requests are serviced which is called as disk scheduling. The simplest form of disk scheduling is, of course, the first-come, first-served (FCFS) algorithm. This algorithm is intrinsically fair, but it generally does not provide the fastest service. In the SCAN algorithm, the disk arm starts at one end, and moves towards the other end, servicing requests as it reaches each cylinder, until it gets to the other end of the disk. At the other end, the direction of head movement is reversed, and servicing continues. The head continuously scans back and forth across the disk. C-SCAN is a variant of SCAN designed to provide a more uniform wait time. Like SCAN, C-SCAN moves the head from one end of the disk to the other, servicing requests along the way. When the head reaches the other end, however, it immediately returns to the beginning of the disk without servicing any requests on the return trip.
+Source Code:
+1. FCFS DISK SCHEDULING ALGORITHM
+
+#include<math.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<conio.h>
+int main()
+{
+    int i,n,req[50],mov=0,cp;
+    printf("enter the current position\n");
+    scanf("%d",&cp);
+    printf("enter the number of requests\n");
+    scanf("%d",&n);
+    printf("enter the request order\n");
+    for(i=0;i<n;i++)
+    {
+        scanf("%d",&req[i]);
+    }
+    mov=mov+abs(cp-req[0]); 
+    printf("%d -> %d",cp,req[0]);
+    for(i=1;i<n;i++)
+    {
+        mov=mov+abs(req[i]-req[i-1]);
+        printf(" -> %d",req[i]);
+    }
+    printf("\n");
+    printf("total head movement = %d\n",mov);
+    getch();
+}
+
+Output:
+
+
+
+2. SCAN DISK SCHEDULING ALGORITHM
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+
+
+int size = 8;
+int disk_size = 200;
+
+void CSCAN(int arr[], int head)
+{
+	int seek_count = 0;
+	int distance, cur_track;
+	vector<int> left, right;
+	vector<int> seek_sequence;
+	left.push_back(0);
+	right.push_back(disk_size - 1);
+	for (int i = 0; i < size; i++) {
+		if (arr[i] < head)
+			left.push_back(arr[i]);
+		if (arr[i] > head)
+			right.push_back(arr[i]);
+	}
+	std::sort(left.begin(), left.end());
+	std::sort(right.begin(), right.end());
+
+
+	for (int i = 0; i < right.size(); i++) {
+		cur_track = right[i];
+		
+		seek_sequence.push_back(cur_track);
+		distance = abs(cur_track - head);
+		seek_count += distance;
+		head = cur_track;
+	
+	head = 0;
+	seek_count += (disk_size - 1);
+	for (int i = 0; i < left.size(); i++) {
+		cur_track = left[i];
+		
+		seek_sequence.push_back(cur_track);
+		distance = abs(cur_track - head);
+seek_count += distance;
+		head = cur_track;}
+	cout << "Total number of seek operations = "
+		<< seek_count << endl;
+
+	cout << "Seek Sequence is" << endl;
+	for (int i = 0; i < seek_sequence.size(); i++) {
+		cout << seek_sequence[i] << endl;}}
+int main()
+{
+	int arr[size] = { 176, 79, 34, 60, 92, 11, 41, 114 };
+	int head = 50;
+
+	cout << "Initial position of head: " << head << endl;
+	CSCAN(arr, head);
+
+	return 0;
+}
+
+Output:
+
+
+
+
+3. C - SCAN DISK SCHEDULING ALGORITHM
+
+
+#include <bits/stdc++.h>
+using namespace std
+int size = 8;
+int disk_size = 200;
+
+void CSCAN(int arr[], int head)
+{
+	int seek_count = 0;
+	int distance, cur_track;
+	vector<int> left, right;
+	vector<int> seek_sequence;
+
+	left.push_back(0);
+	right.push_back(disk_size - 1)
+.
+	for (int i = 0; i < size; i++) {
+		if (arr[i] < head)
+			left.push_back(arr[i]);
+		if (arr[i] > head)
+			right.push_back(arr[i]);
+	}
+	std::sort(left.begin(), left.end());
+	std::sort(right.begin(), right.end());
+	for (int i = 0; i < right.size(); i++) {
+		cur_track = right[i];
+		seek_sequence.push_back(cur_track);
+		distance = abs(cur_track - head);
+		seek_count += distance;
+		head = cur_track;
+	}
+	head = 0;
+	seek_count += (disk_size - 1);
+	for (int i = 0; i < left.size(); i++) {
+		cur_track = left[i];
+		seek_sequence.push_back(cur_track);
+		distance = abs(cur_track - head);
+		seek_count += distance;
+		head = cur_track;
+	}
+
+	cout << "Total number of seek operations = "
+		<< seek_count << endl;
+
+	cout << "Seek Sequence is" << endl;
+
+	for (int i = 0; i < seek_sequence.size(); i++) {
+		cout << seek_sequence[i] << endl;
+	}
+}
+
+
+int main()
+{
+	int arr[size] = { 176, 79, 34, 60, 92, 11, 41, 114 };
+	int head = 50;
+
+	cout << "Initial position of head: " << head << endl;
+	CSCAN(arr, head);
+
+	return 0;
+}
+
+Output:
+
+
+Conclusion:
+Hence after solving some program related to disk management we came to know that, each algorithm is unique in its own way. Overall Performance depends on the number and type of requests and it also helps to improve the speed and accuracy of disc easily.
